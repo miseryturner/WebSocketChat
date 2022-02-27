@@ -1,25 +1,43 @@
-const ws = require('ws');
+const WebSocet = require('ws');
+const express = require('express');
+const app = express();
+const PORT = 5000;
+const router = require('./router');
+const pool = require('./database/connect')
 
-const wss = new ws.Server({port: 5000},() => {
-    console.log('server start on 5000 port')
+app.listen(PORT, () => {
+   console.log(`Server start on port: ${PORT}`);
+})
+
+app.use('/api', router);
+
+app.get('/', (req, res) => {
+   pool.query("SELECT * FROM users").then(data => {
+      res.json(data[0]);
+   });
+})
+
+
+//websocket server
+const server = new WebSocet.Server({ port: 3000 });
+
+server.on('connection', ws => {
+   ws.on('message', message => {
+      console.log(message)
+      server.clients.forEach(client => {
+         if(client.readyState === WebSocet.OPEN) {
+            pool.query("SELECT * FROM users").then(data => {
+               let idUser = data[0][0].id;
+
+               client.send(JSON.stringify({
+                  message: JSON.parse(message).message,
+                  id_user: idUser,
+                  id_chat: JSON.parse(message).id_chat,
+               }));
+            });
+         }
+      });
+   })
+   ws.send('You have connected to the websocket server');
+   console.log('new-user')
 });
-
-wss.on('connection', function connection() {
-    ws.on('message', function(message) {
-        message = JSON.parse(message);
-        switch (message.event) {
-            case 'message':
-                broadcastMessage(message)
-                break;
-            case 'connection':
-                broadcastMessage(message)
-                break;
-        }
-    });
-});
-
-function broadcastMessage(message) {
-    wss.clients.forEach(client => {
-        client.send(JSON.stringify(message))
-    });
-}
