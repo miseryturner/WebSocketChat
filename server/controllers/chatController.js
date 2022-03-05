@@ -1,14 +1,21 @@
 const pool = require('../database/connect');
+const md5 = require("md5");
 
 class chatController {
     async createChat(req, res) {
-        res.send('...');
+        pool.query(`INSERT INTO chats (date_of_creation, first_id , second_id) VALUES ('${new Date}', '${req.fields.first_id}', '${req.fields.second_id}')`).then(data => {
+            res.json(data[0].insertId);
+        });
     }
     async getChats(req, res) {
-        res.send('...');
+        pool.query(`SELECT * FROM chats WHERE first_id=${req.fields.id} OR second_id=${req.fields.id}`).then(data => {
+            res.json(data[0]);
+        });
     }
     async getChat(req, res) {
-        res.send('...');
+        pool.query(`SELECT * FROM chats WHERE first_id=${req.fields.id} OR second_id=${req.fields.id}`).then(data => {
+            res.json(data[0]);
+        });
     }
 }
 

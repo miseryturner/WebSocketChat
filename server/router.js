@@ -12,10 +12,8 @@ router.post('/users', userController.getUsers);
 //chats
 router.post('/create-chat', chatController.createChat);
 router.get('/chats', chatController.getChats);
-router.get('/chat/:id', chatController.getChat);
 
 //messages
-router.post('/send-message', messageController.sendMessage);
 router.get('/messages', messageController.getMessages);
 
 module.exports = router;

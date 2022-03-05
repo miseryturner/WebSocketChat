@@ -1,11 +1,10 @@
 const pool = require('../database/connect');
 
 class messageController {
-    async sendMessage(req, res) {
-        res.send('...');
-    }
     async getMessages(req, res) {
-        res.send('...');
+        pool.query(`SELECT * FROM messages WHERE chat_id=${req.fields.id}`).then(data => {
+            res.json(data[0]);
+        });
     }
 }
 

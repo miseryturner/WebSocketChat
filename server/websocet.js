@@ -1,13 +1,20 @@
-const WebSocet = require('ws');
+const WebSocket = require('ws');
 const express = require('express');
 const app = express();
 const PORT = 5000;
 const router = require('./router');
-const pool = require('./database/connect')
+const pool = require('./database/connect');
+const bodyParser = require('body-parser');
+const formidable = require('express-formidable');
 
 app.listen(PORT, () => {
    console.log(`Server start on port: ${PORT}`);
-})
+});
+
+app.use(formidable());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api', router);
 
@@ -17,21 +24,19 @@ app.get('/', (req, res) => {
    });
 })
 
-
 //websocket server
-const server = new WebSocet.Server({ port: 3000 });
+const server = new WebSocket.Server({ port: 3000 });
 
+// получаем с клиента текст сообщения, айди отправителя, айди чата
 server.on('connection', ws => {
    ws.on('message', message => {
       console.log(message)
       server.clients.forEach(client => {
-         if(client.readyState === WebSocet.OPEN) {
-            pool.query("SELECT * FROM users").then(data => {
-               let idUser = data[0][0].id;
-
+         if(client.readyState === WebSocket.OPEN) {
+            pool.query(`INSERT INTO messages (text, from_user_id , chat_id) VALUES ('${JSON.parse(message).message}', '${JSON.parse(message).id_user}', '${JSON.parse(message).id_chat}')`).then(data => {
                client.send(JSON.stringify({
                   message: JSON.parse(message).message,
-                  id_user: idUser,
+                  id_user: JSON.parse(message).id_user,
                   id_chat: JSON.parse(message).id_chat,
                }));
             });
