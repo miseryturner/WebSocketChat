@@ -1,7 +1,6 @@
 <template>
     <div id="nav" class="app">
       <Header @setting="settingView"/>
-      <button class="test" @click="sendMessage('hello, it`s test message', 12, 2)">test</button>
       <router-view :settings-view="settingsView"/>
     </div>
 </template>
@@ -16,7 +15,13 @@ export default {
   data() {
     return {
       settingsView: false,
-      ws: ''
+      ws: '',
+      user_id: true
+    }
+  },
+  beforeCreate() {
+    if(!localStorage.getItem('id') && location.pathname != '/register') {
+      this.$router.push({ path: '/auth' });
     }
   },
   async mounted() {

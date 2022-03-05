@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 27 2022 г., 22:44
+-- Время создания: Мар 06 2022 г., 01:21
 -- Версия сервера: 8.0.24
 -- Версия PHP: 8.0.14
 
@@ -24,90 +24,46 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `chats`
---
-
-CREATE TABLE `chats` (
-  `id` int NOT NULL,
-  `date_of_creation` date NOT NULL,
-  `first_id` int NOT NULL,
-  `second_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `messages`
---
-
-CREATE TABLE `messages` (
-  `id` int NOT NULL,
-  `text` varchar(10000) COLLATE utf8_unicode_ci NOT NULL,
-  `from_user_id` int NOT NULL,
-  `chat_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `users`
 --
 
 CREATE TABLE `users` (
-  `id` int NOT NULL,
-  `login` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `profile_picture` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+                         `id` int NOT NULL,
+                         `login` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                         `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                         `profile_picture` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                         `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+--
+-- Дамп данных таблицы `users`
+--
+
+INSERT INTO `users` (`id`, `login`, `password`, `profile_picture`, `phone`) VALUES
+                                                                                (43, '123123123', 'e6db1baa29d3df1eb307ff6a12c778da', '', '123123'),
+                                                                                (45, '123123123', 'e6db1baa29d3df1eb307ff6a12c778da', '', '1231232'),
+                                                                                (46, 'test', '098f6bcd4621d373cade4e832627b4f6', '', '898227');
 
 --
 -- Индексы сохранённых таблиц
 --
 
 --
--- Индексы таблицы `chats`
---
-ALTER TABLE `chats`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `first_id` (`first_id`),
-  ADD KEY `second_id` (`second_id`);
-
---
--- Индексы таблицы `messages`
---
-ALTER TABLE `messages`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `from_user_id` (`from_user_id`),
-  ADD KEY `chat_id` (`chat_id`);
-
---
 -- Индексы таблицы `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+    ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `phone` (`phone`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
 --
 
 --
--- AUTO_INCREMENT для таблицы `chats`
---
-ALTER TABLE `chats`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT для таблицы `messages`
---
-ALTER TABLE `messages`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
