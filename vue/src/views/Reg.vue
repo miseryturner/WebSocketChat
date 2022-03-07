@@ -2,9 +2,9 @@
   <div class="auth">
     <div class="form">
       <h1>Регистрация</h1>
-      <input type="text" placeholder="Логин">
-      <input type="text" ref="field" placeholder="Номер телефона">
-      <input type="password" placeholder="Пароль">
+      <input type="text" v-model="userData.login" placeholder="Логин">
+      <input type="text" v-model="userData.phone" ref="field" placeholder="Номер телефона">
+      <input type="password" v-model="userData.password" placeholder="Пароль">
       <div class="form-group">
         <router-link to="/auth" class="form-recovery" href="#">Авторизация</router-link>
       </div>
@@ -20,7 +20,11 @@ import inputmask from "inputmask";
 export default {
   data() {
     return {
-
+      userData: {
+        login: '',
+        phone: '',
+        password: ''
+      }
     }
   },
   mounted () {
@@ -30,8 +34,25 @@ export default {
   },
   methods: {
     register() {
-      localStorage.setItem('id', 1);
-      this.$router.push({ path: '/' });
+      let formdata = new FormData();
+      formdata.append("login", this.userData.login);
+      formdata.append("phone", this.userData.phone);
+      formdata.append("password", this.userData.password);
+
+      let requestOptions = {
+        method: 'POST',
+        body: formdata,
+        redirect: 'follow'
+      };
+
+      fetch("http://localhost:5000/api/registration", requestOptions)
+          .then(response => response.text())
+          .then(result => {
+            console.log(result)
+            localStorage.setItem('id', result)
+            location.href = '/'
+          })
+          .catch(error => console.log('error', error));
     }
   }
 }

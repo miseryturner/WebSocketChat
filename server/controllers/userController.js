@@ -12,11 +12,22 @@ class userController {
         }
     }
     async login(req, res) {
-        pool.query(`SELECT * FROM users WHERE login='${req.fields.login}' AND password='${md5(req.fields.password)}'`).then(data => {
+        pool.query(`SELECT * FROM users WHERE phone='${req.fields.phone}' AND password='${md5(req.fields.password)}'`).then(data => {
             if(data[0].length)
-                res.json(data[0]);
+                res.json(data[0][0].id);
             else
                 res.json('Введённые вами данные не верны');
+        });
+    }
+    async getUser(req, res) {
+        pool.query(`SELECT * FROM users WHERE id='${req.fields.id}'`).then(data => {
+            if(data[0].length)
+                res.json({
+                    name: data[0][0].login,
+                    phone: data[0][0].phone
+                });
+            else
+                res.json('Авторизуйтесь');
         });
     }
     async getUsers(req, res) {

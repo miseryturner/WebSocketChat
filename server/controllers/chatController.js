@@ -8,8 +8,11 @@ class chatController {
         });
     }
     async getChats(req, res) {
-        pool.query(`SELECT * FROM chats WHERE first_id=${req.fields.id} OR second_id=${req.fields.id}`).then(data => {
-            res.json(data[0]);
+        pool.query(`SELECT * FROM chats WHERE first_id=${req.query.id} OR second_id=${req.query.id}`).then(data => {
+            if(data[0].length)
+                res.json(data[0]);
+            else
+                res.send('У вас нет ни одного чата');
         });
     }
     async getChat(req, res) {

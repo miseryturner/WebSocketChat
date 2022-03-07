@@ -6,6 +6,7 @@ const messageController = require('./controllers/messageController');
 
 //users
 router.post('/registration', userController.registration);
+router.post('/user', userController.getUser);
 router.post('/login', userController.login);
 router.post('/users', userController.getUsers);
 
