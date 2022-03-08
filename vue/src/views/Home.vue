@@ -11,7 +11,7 @@
           </div>
         </div>
       </div>
-      <button class="add"></button>
+      <router-link to="/search" class="add"></router-link>
       <div class="overlay"></div>
     </div>
     <div class="chat-area">

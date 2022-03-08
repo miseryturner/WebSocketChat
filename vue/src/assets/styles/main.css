@@ -70,7 +70,8 @@ html {
   height: 80px;
   z-index: 3;
   position: relative;
-  margin-left: 280px;
+  width: 100%;
+  border: 1px solid;
 }
 .search-bar input {
   height: 100%;
@@ -691,6 +692,32 @@ html {
   font-weight: 500;
   line-height: inherit;
   transition: 0.3s ease;
+}
+
+.users {
+  margin-top: 50px;
+}
+
+.user_item button {
+  position: absolute;
+  right: 40px;
+  height: 140px;
+  width: 220px;
+  font-size: 30px;
+}
+
+.user_item img {
+  width: 180px;
+  border-radius: 50%;
+  margin-right: 25px;
+}
+
+.user_item {
+  position: relative;
+  align-items: center;
+  padding: 50px;
+  display: flex;
+  border: 1px solid;
 }
 
 @media (max-width: 1120px) {
